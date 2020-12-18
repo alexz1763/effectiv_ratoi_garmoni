@@ -1,4 +1,5 @@
 from tabulate import tabulate
+import xlrd, xlwt
 
 import matplotlib.pyplot as plt
 
@@ -21,6 +22,16 @@ S_gar_1 = {i: (1.9602*i)/(8.91+0.11*(i**2)) for i in range(N_min, N_mах+1)}
 S_gar_1_1 = {i: (2.15622*i)/(10.7811+0.11*(i**2)) for i in range(N_min, N_mах+1)}
 S_gar_1_2 = {i: (2.35224*i)/(12.8304+0.11*(i**2)) for i in range(N_min, N_mах+1)}
 columns = ['количество узлов', 'среднегармонический ОКЭ']
+wb = xlwt.Workbook()
+ws = wb.add_sheet('one')
+row = ws.row(0)
+for i in range(N_min, N_mах+1):
+    row = ws.row(i)
+    row.write(0, i)
+    row.write(1, S_gar_1[i])
+    row.write(2, S_gar_1_1[i])
+    row.write(3, S_gar_1_2[i])
+wb.save('среднегармонический.xls')
 print('Kкр=1', tabulate(list(S_gar_1.items()), headers=columns, tablefmt="grid"), sep='\n')
 print('Kкр=1_1', tabulate(list(S_gar_1_1.items()), headers=columns, tablefmt="grid"), sep='\n')
 print('Kкр=1_2', tabulate(list(S_gar_1_2.items()), headers=columns, tablefmt="grid"), sep='\n')
